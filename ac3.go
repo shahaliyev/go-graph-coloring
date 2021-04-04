@@ -1,5 +1,9 @@
 package main
 
+import (
+	"container/list"
+)
+
 // Defines Arc type
 type Arc struct {
 	from int
@@ -13,7 +17,9 @@ func revise(X, Y int) bool {
 	for _, colorX := range domains[X] {
 		flag := false
 		for _, colorY :=  range domains[Y] {
-			if colorX != colorY { flag = true }
+			if colorX != colorY {
+				flag = true
+			}
 		}
 		// if no value satisfied the constraint
 		if flag == false {
@@ -26,9 +32,8 @@ func revise(X, Y int) bool {
 	return revised
 }
 
-// AC-3 algorithm (for demonstration purposes)
-// Preprocessing is of no use for the graph coloring problem
-func ac3() bool {
+// AC-3 algorithm
+func ac3(queue *list.List) bool {
 	for queue.Len() > 0 {
 		// getting arc from the queue
 		front := queue.Front()
@@ -39,11 +44,26 @@ func ac3() bool {
 			if len(domains[arc.from]) == 0 { return false }
 			// adding arcs from neighbors to the queue
 			for _, neighbor := range graph[arc.from] {
-				if neighbor == arc.to { continue }
-				queue.PushBack(Arc{neighbor, arc.from})
+				if colors[neighbor] == 0 && neighbor != arc.to {
+					queue.PushBack(Arc{neighbor, arc.from})
+				}
 			}
 		}
 	}
 
 	return true
+}
+
+// Gets neighboring arcs as queue for ac3
+func getArcs(vertex int) *list.List {
+	var queue = list.New()
+
+	for _, neighbor := range graph[vertex] {
+		// if unassigned
+		if colors[neighbor] == 0 {
+			queue.PushBack(Arc{neighbor, vertex})
+		}
+	}
+
+	return queue
 }

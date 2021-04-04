@@ -28,8 +28,6 @@ func buildFromFile(input *os.File) {
 			if !contains(graph[from], to) {
 				graph[from] = append(graph[from], to)
 				graph[to] = append(graph[to], from)
-				queue.PushBack(Arc{from, to})
-				queue.PushBack(Arc{to, from})
 			}
 		} else
 		if section == "color count" {

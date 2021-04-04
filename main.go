@@ -14,9 +14,6 @@ func main() {
 	// building domains
 	buildDomains()
 
-	// preprocessing with AC-3 algorithm (does nothing)
-	ac3()
-
 	// backtracking and coloring graph
 	display := colorGraph()
 

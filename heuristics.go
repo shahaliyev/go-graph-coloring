@@ -21,7 +21,7 @@ func mrvHeuristic() int {
 }
 
 // Returns the sorted domain of least constraining values
-func lcvHeuristic(vertex int) PairList {
+func lcvHeuristic(vertex int) []int {
 	var domain = sliceToMap(domains[vertex])
 
 	for _, vertexColor := range domains[vertex] {
@@ -36,7 +36,15 @@ func lcvHeuristic(vertex int) PairList {
 	}
 
 	// sorting and returning the domain according to the highest degree
-	return sortMap(domain)
+	sorted := sortMap(domain)
+
+	// returning new domain as result
+	var result []int
+	for _, lcv := range sorted {
+		result = append(result, lcv.Color)
+	}
+
+	return result
 }
 
 // Returns a vertex with the maximum degree
